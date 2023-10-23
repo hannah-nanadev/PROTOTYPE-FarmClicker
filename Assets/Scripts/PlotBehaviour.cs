@@ -7,6 +7,7 @@ public class PlotBehaviour : MonoBehaviour
     [Header("Game Stats")]
     public int balance = 0;
     public int plant = 1;
+    public int balanceMultiplier = 1;
     int growth = 0;
     bool grown = false;
 
@@ -23,21 +24,22 @@ public class PlotBehaviour : MonoBehaviour
 
     void OnMouseDown()
     {
-        GrowPlant();
         if(grown)
             Harvest();
+        else
+            GrowPlant();
     }
 
     void GrowPlant()
     {
         growth++;
-        if(growth==6)
+        if(growth==5)
             grown = true;
     }
 
     void Harvest()
     {
-        balance = balance+(plant*10);
+        balance = balance+(plant*10*balanceMultiplier);
         growth = 0;
         grown = false;
     }
