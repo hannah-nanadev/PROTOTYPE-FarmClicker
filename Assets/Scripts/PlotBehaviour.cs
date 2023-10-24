@@ -9,7 +9,9 @@ public class PlotBehaviour : MonoBehaviour
     public int defaultPlant = 1;
     public bool defaultGrowthStatus = false;
     public int balanceMultiplier = 1;
+    public int waterers = 0;
     int growth = 0;
+    bool stopped = false;
 
     private Animator anim;
 
@@ -21,8 +23,33 @@ public class PlotBehaviour : MonoBehaviour
         SetGrowthStatus(defaultGrowthStatus);
     }
 
+    //FixedUpdate is called every fixed framerate frame
+    void FixedUpdate()
+    {
+        if(!stopped)
+        {
+            for(int i = 0; i<waterers; i++)
+            {
+                ClickPlot();
+            }
+            StartCoroutine(waitASec());
+        }
+    }
+
+    IEnumerator waitASec()
+    {
+        stopped = true;
+        yield return new WaitForSeconds(1.0f);
+        stopped = false;
+    }
+
     //Detects clicks on object
     void OnMouseDown()
+    {
+        ClickPlot();
+    }
+
+    void ClickPlot()
     {
         if(GrowthStatus())
             Harvest();
@@ -87,6 +114,21 @@ public class PlotBehaviour : MonoBehaviour
             ChangePlant(3);
             Debug.Log(balance);
         }
+    }
+
+    public void BuyWaterer()
+    {
+        int cost = getWatererCost();
+        if(balance>=cost)
+        {
+            balance = balance-cost;
+            waterers++;
+        }
+    }
+
+    public int getWatererCost()
+    {
+        return (waterers+1)*25;
     }
 
 }
