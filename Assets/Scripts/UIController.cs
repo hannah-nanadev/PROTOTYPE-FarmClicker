@@ -14,7 +14,7 @@ public class UIController : MonoBehaviour
 
     public PlotBehaviour plot;
 
-    // Update is called once per frame
+    // Update is called once per frame - Lets any nonstatic UI elements update
     void Update()
     {
         watererButton.text = "Waterer - $" + (plot.getWatererCost().ToString());

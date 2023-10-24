@@ -36,6 +36,7 @@ public class PlotBehaviour : MonoBehaviour
             StartCoroutine(waitASec());
         }
 
+        //Checks to ensure waterers are up before starting particle system
         if(waterers>0)
         {
             water.Play();
@@ -65,6 +66,7 @@ public class PlotBehaviour : MonoBehaviour
             GrowPlant();
     }
 
+    //Game-related methods
     void GrowPlant()
     {
         growth++;
@@ -138,6 +140,7 @@ public class PlotBehaviour : MonoBehaviour
         }
     }
 
+    //Calculates current cost of waterers, scaling up as you get more
     public int getWatererCost()
     {
         return ((int)Mathf.Pow((float)(waterers+1), 2))*50;
@@ -153,6 +156,7 @@ public class PlotBehaviour : MonoBehaviour
         }
     }
 
+    //Similar method to waterercost but for fertilizer
     public int getFertilizerCost()
     {
         return ((int)Mathf.Pow((float)(fertilizer+1), 2))*100;
