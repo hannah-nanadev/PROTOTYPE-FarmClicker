@@ -8,7 +8,7 @@ public class PlotBehaviour : MonoBehaviour
     public int balance = 0;
     public int defaultPlant = 1;
     public bool defaultGrowthStatus = false;
-    public int balanceMultiplier = 1;
+    public int fertilizer = 0;
     public int waterers = 0;
     int growth = 0;
     bool stopped = false;
@@ -47,6 +47,7 @@ public class PlotBehaviour : MonoBehaviour
     void OnMouseDown()
     {
         ClickPlot();
+        AudioManager.instance.WaterSound();
     }
 
     void ClickPlot()
@@ -60,15 +61,19 @@ public class PlotBehaviour : MonoBehaviour
     void GrowPlant()
     {
         growth++;
-        AudioManager.instance.WaterSound();
         if(growth==5)
+        {
             SetGrowthStatus(true);
             AudioManager.instance.GrowSound();
+        }
     }
 
     void Harvest()
     {
-        balance = balance+(CurrentPlant()*10*balanceMultiplier);
+        int balanceMultiplier = fertilizer+1;
+        int plantMultiplier = (int)Mathf.Pow(10f, (float)CurrentPlant());
+
+        balance = balance+(plantMultiplier*balanceMultiplier);
         growth = 0;
         SetGrowthStatus(false);
         AudioManager.instance.PopSound();
@@ -100,7 +105,7 @@ public class PlotBehaviour : MonoBehaviour
     {
         if(balance>=500)
         {
-            balance = balance-100;
+            balance = balance-500;
             ChangePlant(2);
             Debug.Log(balance);
         }
@@ -108,9 +113,9 @@ public class PlotBehaviour : MonoBehaviour
 
     public void BuyCarrots()
     {
-        if(balance>=1000)
+        if(balance>=50000)
         {
-            balance = balance-1000;
+            balance = balance-50000;
             ChangePlant(3);
             Debug.Log(balance);
         }
@@ -128,7 +133,22 @@ public class PlotBehaviour : MonoBehaviour
 
     public int getWatererCost()
     {
-        return (waterers+1)*25;
+        return ((int)Mathf.Pow((float)(waterers+1), 2))*50;
+    }
+
+    public void BuyFertilizer()
+    {
+        int cost = getFertilizerCost();
+        if(balance>=cost)
+        {
+            balance = balance-cost;
+            fertilizer++;
+        }
+    }
+
+    public int getFertilizerCost()
+    {
+        return ((int)Mathf.Pow((float)(fertilizer+1), 2))*100;
     }
 
 }
