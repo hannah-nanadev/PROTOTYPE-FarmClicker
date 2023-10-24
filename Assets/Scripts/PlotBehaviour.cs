@@ -14,6 +14,7 @@ public class PlotBehaviour : MonoBehaviour
     bool stopped = false;
 
     private Animator anim;
+    public ParticleSystem water;
 
     // Awake is called on object initialisation
     void Awake()
@@ -34,6 +35,11 @@ public class PlotBehaviour : MonoBehaviour
             }
             StartCoroutine(waitASec());
         }
+
+        if(waterers>0)
+        {
+            water.Play();
+        }
     }
 
     IEnumerator waitASec()
@@ -52,6 +58,7 @@ public class PlotBehaviour : MonoBehaviour
 
     void ClickPlot()
     {
+        //Controller for whether or not plant is grown or harvested
         if(GrowthStatus())
             Harvest();
         else
