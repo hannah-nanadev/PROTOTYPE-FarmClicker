@@ -16,6 +16,7 @@ public class CameraShake : MonoBehaviour
     void Awake()
     {
         cvc = GetComponent<CinemachineVirtualCamera>();
+        _cbmcp = cvc.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     //Start is called before the first frame - Prevents camera from starting out shaking
@@ -27,15 +28,12 @@ public class CameraShake : MonoBehaviour
     //Method to call if something wants to shake/stop shaking camera
     public void ShakeCamera()
     {
-        _cbmcp = cvc.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _cbmcp.m_AmplitudeGain = ShakeIntensity;
-
         timer = ShakeTime;
     }
 
     void StopShake()
     {
-        _cbmcp = cvc.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _cbmcp.m_AmplitudeGain = 0f;
         timer = 0;
     }
