@@ -15,6 +15,8 @@ public class PlotBehaviour : MonoBehaviour
 
     private Animator anim;
     public ParticleSystem water;
+    public ParticleSystem harvestEffect;
+    public ParticleSystem manualWater;
 
     // Awake is called on object initialisation
     void Awake()
@@ -36,11 +38,6 @@ public class PlotBehaviour : MonoBehaviour
             StartCoroutine(waitASec());
         }
 
-        //Checks to ensure waterers are up before starting particle system
-        if(waterers>0)
-        {
-            water.Play();
-        }
     }
 
     IEnumerator waitASec()
@@ -70,6 +67,7 @@ public class PlotBehaviour : MonoBehaviour
     void GrowPlant()
     {
         growth++;
+        manualWater.Emit(25);
         if(growth==5)
         {
             SetGrowthStatus(true);
@@ -86,6 +84,7 @@ public class PlotBehaviour : MonoBehaviour
         growth = 0;
         SetGrowthStatus(false);
         AudioManager.instance.PopSound();
+        harvestEffect.Emit(50);
     }
 
     //Getter/setter methods to make it easier to get and change growth status and current plant as those are held in animator
@@ -138,6 +137,9 @@ public class PlotBehaviour : MonoBehaviour
             balance = balance-cost;
             waterers++;
         }
+
+        //Start water particles on waterer purchase
+        water.Play();
     }
 
     //Calculates current cost of waterers, scaling up as you get more
